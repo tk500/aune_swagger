@@ -1,0 +1,3856 @@
+# version
+openapi: 3.0.0
+
+x-stoplight:
+  id: my3q2l28a24vy
+
+# API Information
+info:
+  title: aune
+  description: 出会い系サービスプロジェクト aune api document
+  contact:
+    name: Takuya ishitsuka
+    email: ishitsuka@adolescence.co.jp
+  version: 1.0.1-oas3
+
+# Server Description
+servers:
+  - url: 'http://localhost:3000'
+
+  - url: 'https://virtserver.swaggerhub.com/ISHITSUKA_1/aune/1.0.0'
+    description: Mock server SSL/TLS
+
+  - url: 'http://virtserver.swaggerhub.com/ISHITSUKA_1/aune/1.0.0'
+    description: Mock server
+
+# Tags
+tags:
+  - name: Auth
+    description: 認証系操作
+
+  - name: Verify
+    description: 本人認証操作
+
+  - name: User
+    description: ユーザー情報取得、更新系操作
+
+  - name: Payment Method
+    description: 決済情報取得、更新系操作
+
+  - name: Subscription
+    description: サブスクリプション
+
+  - name: Orders
+    description: 決済情報
+
+  - name: Notifications
+    description: 通知
+
+  - name: Informations
+    description: お知らせ
+
+  - name: Like
+    description: いいね
+
+  - name: Match
+    description: マッチング成約
+
+  - name: Review
+    description: レビュー
+
+  - name: Search
+    description: 検索ロジック
+
+  - name: Block
+    description: ユーザーブロック
+
+  - name: Prefecture
+    description: 都道府県、市区町村
+
+  - name: Board
+    description: 募集掲示板
+
+# Paths
+paths:
+  # 認証回り
+  '/api/v1/csrf-cookie':
+    get:
+      tags:
+        - Auth
+      summary: 'CSRF TOKEN 発行'
+      responses:
+        '204':
+          description: 'Add X-CSRF-TOKEN to request header'
+
+  '/api/v1/auth/pre-register':
+    post:
+      tags:
+        - Auth
+      summary: '事前会員登録'
+      requestBody:
+        description: '事前会員登録入力'
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  description: 'ユーザーネーム'
+                  type: string
+                  nullable: false
+                  minLength: 1
+                  maxLength: 255
+                birthday:
+                  description: '生年月日'
+                  type: string
+                  format: date
+                  nullable: false
+                gender:
+                  description: '性別 1:男性, 2:女性'
+                  type: integer
+                  nullable: false
+                  minimum: 1
+                  maximum: 2
+                height:
+                  description: '身長'
+                  type: integer
+                  nullable: false
+                  minimum: 50
+                  maximum: 300
+                weight:
+                  description: '体重'
+                  type: integer
+                  nullable: false
+                  minimum: 1
+                  maximum: 1000
+                body_shape:
+                  description: '体型'
+                  type: integer
+                  nullable: false
+                  minimum: -2
+                  maximum: 2
+                experienced_count:
+                  description: '経験人数'
+                  type: integer
+                  nullable: false
+                  minimum: 0
+                prefecture:
+                  description: '都道府県'
+                  type: integer
+                  nullable: false
+                  minimum: 1
+                  maximum: 47
+                email:
+                  description: 'メールアドレス'
+                  type: string
+                  format: email
+                  nullable: false
+                  minLength: 1
+                  maxLength: 255
+                password:
+                  description: 'パスワード'
+                  type: string
+                  format: password
+                  nullable: false
+                  minLength: 8
+                  maxLength: 32
+                password_confirmation:
+                  description: 'パスワード再確認'
+                  type: string
+                  format: password
+                  nullable: false
+                  minLength: 8
+                  maxLength: 32
+                is_filmable:
+                  description: '撮影の可否'
+                  type: boolean
+                  nullable: false
+                is_contact_required:
+                  description: '事前連絡の要否'
+                  type: boolean
+                  nullable: false
+                is_photo_exchange_required:
+                  description: '事前写真交換の要否'
+                  type: boolean
+                  nullable: false
+                matchable_min:
+                  description: 'マッチング最小年齢'
+                  type: integer
+                  nullable: false
+                  minimum: 18
+                  maximum: 100
+                matchable_max:
+                  description: 'マッチング最大年齢'
+                  type: integer
+                  nullable: false
+                  minimum: 18
+                  maximum: 100
+                activated_at:
+                  description: '活動開始時間'
+                  type: string
+                  format: time
+                  nullable: false
+                unactivated_at:
+                  description: '活動終了時間'
+                  type: string
+                  format: time
+                  nullable: false
+                active_weekdays:
+                  description: 'アクティブな曜日'
+                  type: array
+                  nullable: false
+                  items:
+                    type: integer
+                    minimum: 0
+                    maximum: 6
+                active_areas:
+                  description: '活動範囲'
+                  type: array
+                  nullable: false
+                  items:
+                    description: '市区町村コード'
+                    type: string
+                sadochism_point:
+                  description: 'S度'
+                  type: integer
+                  nullable: false
+                  minimum: 0
+                  maximum: 5
+                masochism_point:
+                  description: 'M度'
+                  type: integer
+                  nullable: false
+                  minimum: 0
+                  maximum: 5
+                fellatio_point:
+                  description: 'フェラチオが好きか'
+                  type: integer
+                  nullable: false
+                  minimum: -2
+                  maximum: 2
+                cunnilingus_point:
+                  description: 'クンニリングスが好きか'
+                  type: integer
+                  nullable: false
+                  minimum: -2
+                  maximum: 2
+                neck_strangle_point:
+                  description: '首絞めが好きか'
+                  type: integer
+                  nullable: false
+                  minimum: -2
+                  maximum: 2
+                bite_point:
+                  description: '噛む性癖が好きか'
+                  type: integer
+                  nullable: false
+                  minimum: -2
+                  maximum: 2
+                hypnotism_point:
+                  description: '催眠が好きか'
+                  type: integer
+                  nullable: false
+                  minimum: -2
+                  maximum: 2
+                anus_point:
+                  description: 'アナルが好きか'
+                  type: integer
+                  nullable: false
+                  minimum: -2
+                  maximum: 2
+                torture_by_words_point:
+                  description: '言葉責めが好きか'
+                  type: integer
+                  nullable: false
+                  minimum: -2
+                  maximum: 2
+                spanking_point:
+                  description: 'スパンキングが好きか'
+                  type: integer
+                  nullable: false
+                  minimum: -2
+                  maximum: 2
+                outdoor_point:
+                  description: '青姦が好きか'
+                  type: integer
+                  nullable: false
+                  minimum: -2
+                  maximum: 2
+                squirting_point:
+                  description: '女性の潮吹きが好きか'
+                  type: integer
+                  nullable: false
+                  minimum: -2
+                  maximum: 2
+                multiple_point:
+                  description: '乱行が好きか'
+                  type: integer
+                  nullable: false
+                  minimum: -2
+                  maximum: 2
+                cosplay_point:
+                  description: 'コスプレが好きか'
+                  type: integer
+                  nullable: false
+                  minimum: -2
+                  maximum: 2
+                toy_point:
+                  description: 'おもちゃが好きか'
+                  type: integer
+                  nullable: false
+                  minimum: -2
+                  maximum: 2
+                kiss_point:
+                  description: 'キスが好きか'
+                  type: integer
+                  nullable: false
+                  minimum: -2
+                  maximum: 2
+                lovey_point:
+                  description: 'イチャイチャが好きか'
+                  type: integer
+                  nullable: false
+                  minimum: -2
+                  maximum: 2
+                deepthroat_point:
+                  description: 'イマラチオは好きか'
+                  type: integer
+                  nullable: false
+                  minimum: -2
+                  maximum: 2
+                drink_sperm_point:
+                  description: '精飲は好きか'
+                  type: integer
+                  nullable: false
+                  minimum: -2
+                  maximum: 2
+              required:
+                - name
+                - birthday
+                - gender
+                - height
+                - weight
+                - body_shape
+                - experienced_count
+                - prefecture
+                - email
+                - password
+                - password_confirmation
+                - is_filmable
+                - is_contact_required
+                - is_photo_exchange_required
+                - matchable_min
+                - matchable_max
+                - activated_at
+                - unactivated_at
+                - active_weekdays
+                - active_areas
+                - sadochism_point
+                - masochism_point
+                - fellatio_point
+                - cunnilingus_point
+                - neck_strangle_point
+                - bite_point
+                - hypnotism_point
+                - anus_point
+                - torture_by_words_point
+                - spanking_point
+                - outdoor_point
+                - squirting_point
+                - multiple_point
+                - cosplay_point
+                - toy_point
+                - kiss_point
+                - lovey_point
+                - deepthroat_point
+                - drink_sperm_point
+            examples:
+              '初回登録成功':
+                value:
+                  name: 'テスト太郎'
+                  birthday: '1970-01-01'
+                  gender: 1
+                  height: 170
+                  weight: 65
+                  body_shape: 1
+                  experienced_count: 10
+                  prefecture: 13
+                  email: 'test@example.com'
+                  password: 'Passw0rd'
+                  password_confirmation: 'Passw0rd'
+                  is_filmable: false
+                  is_contact_required: true
+                  is_photo_exchange_required: true
+                  matchable_min: 26
+                  matchable_max: 36
+                  activated_at: '20:00:00'
+                  unactivated_at: '26:00:00'
+                  active_weekdays: [0, 6]
+                  active_areas: ['13110', '13111']
+                  sadochism_point: 1
+                  masochism_point: 2
+                  fellatio_point: 2
+                  cunnilingus_point: -2
+                  neck_strangle_point: -2
+                  bite_point: -2
+                  hypnotism_point: -2
+                  anus_point: -1
+                  torture_by_words_point: 1
+                  spanking_point: -2
+                  outdoor_point: -2
+                  squirting_point: 1
+                  multiple_point: -2
+                  cosplay_point: 2
+                  toy_point: 2
+                  kiss_point: 2
+                  lovey_point: 2
+                  deepthroat_point: 2
+                  drink_sperm_point: 1
+      responses:
+        '201':
+          description: '事前会員登録成功'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  user:
+                    $ref: '#/components/schemas/User'
+                  active_weekdays:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ActiveWeekDays'
+                  active_areas:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ActiveAreas'
+                  sexuality:
+                    $ref: '#/components/schemas/Sexuality'
+        '422':
+          description: 'POSTパラメータ異常によるバリデーションエラー'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errors:
+                    $ref: '#/components/schemas/422Error'
+
+  '/api/v1/auth/register':
+    post:
+      tags:
+        - Auth
+      summary: '会員登録'
+      requestBody:
+        description: '会員登録入力。ユーザー登録に成功した場合は認証トークンを発行、メールを送信する。パラメータ: id, token'
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  description: 'メールアドレス'
+                  type: string
+                  format: email
+                  nullable: false
+                  minLength: 1
+                  maxLength: 255
+                password:
+                  description: 'パスワード'
+                  type: string
+                  format: password
+                  nullable: false
+                  minLength: 8
+                  maxLength: 32
+                password_confirmation:
+                  description: 'パスワード再確認'
+                  type: string
+                  format: password
+                  nullable: false
+                  minLength: 8
+                  maxLength: 32
+              required:
+                - email
+                - password
+                - password_confirmation
+            examples:
+              '初回登録成功':
+                value:
+                  email: 'test@example.com'
+                  password: 'Passw0rd'
+                  password_confirmation: 'Passw0rd'
+      responses:
+        '201':
+          description: '会員登録成功'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  user:
+                    $ref: '#/components/schemas/User'
+        '422':
+          description: 'POSTパラメータ異常によるバリデーションエラー'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errors:
+                    $ref: '#/components/schemas/422Error'
+
+  '/api/v1/auth/verify':
+    get:
+      tags:
+        - Auth
+      summary: '会員登録メール認証'
+      parameters:
+        - in: query
+          name: user_id
+          schema:
+            type: integer
+          required: true
+          description: 'ユーザーID'
+        - in: query
+          name: token
+          schema:
+            type: string
+          required: true
+          description: '会員登録メール認証トークン'
+      responses:
+        '200':
+          description: '認証成功。成功時にはトークンを削除'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  user:
+                    $ref: '#/components/schemas/User'
+        '404':
+          description: 'id, 有効なtokenからユーザーを見つけることができなかった場合'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    nullable: false
+                    example: 'User Not Found.'
+
+  '/api/v1/auth/login':
+    post:
+      tags:
+        - Auth
+      summary: 'ログイン'
+      requestBody:
+        description: 'ログイン時の入力'
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  description: 'メールアドレス'
+                  type: string
+                  format: email
+                  nullable: false
+                  minLength: 1
+                  maxLength: 255
+                password:
+                  description: 'パスワード'
+                  type: string
+                  format: password
+                  nullable: false
+                  minLength: 8
+                  maxLength: 32
+              required:
+                - email
+                - password
+            examples:
+              'ログイン成功':
+                value:
+                  email: 'test@example.com'
+                  password: 'Passw0rd'
+      responses:
+        '200':
+          description: 'ログイン成功'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  user:
+                    $ref: '#/components/schemas/User'
+        '404':
+          description: 'ユーザーが見つからない場合'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    nullable: false
+                    example: 'User Not Found.'
+
+  '/api/v1/auth/logout':
+    get:
+      tags:
+        - Auth
+      summary: 'ログアウト'
+      responses:
+        '200':
+          description: 'ログアウト成功'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    nullable: false
+                    example: 'Logged Out.'
+
+  '/api/v1/auth/twitter-login':
+    get:
+      tags:
+        - Auth
+      summary: 'Twitterでのログイン'
+      responses:
+        '200':
+          description: 'Twitter oauth URL発行成功'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  url:
+                    nullable: false
+                    example: 'https://api.twitter.com/hoge/hoge'
+
+  '/api/v1/auth/twitter-login-callback':
+    get:
+      tags:
+        - Auth
+      summary: 'Twitterでのログイン CALLBACK'
+      parameters:
+        - in: query
+          name: oauth_token
+          schema:
+            type: string
+          required: true
+          description: 'oauth token'
+        - in: query
+          name: oauth_verifier
+          schema:
+            type: string
+          required: true
+          description: 'oauth verifier'
+      responses:
+        '200':
+          description: 'ログイン成功'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  user:
+                    $ref: '#/components/schemas/User'
+        '403':
+          description: '複数回同じoauth_token, oauth_verifierを使用した'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    nullable: false
+                    example: 'Multiple request not allowed'
+        '404':
+          description: 'Twitter認証が完了しているユーザーを取得できなかった'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    nullable: false
+                    example: 'User Not Found.'
+
+  '/api/v1/auth/password-reset-request':
+    post:
+      tags:
+        - Auth
+      summary: 'パスワード変更申請'
+      requestBody:
+        description: 'パスワードを変更したいアカウントのメールアドレス アカウントを見つけた場合はトークンを発行してメール送信'
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  description: 'メールアドレス'
+                  type: string
+                  format: email
+                  nullable: false
+                  minLength: 1
+                  maxLength: 255
+              required:
+                - email
+            examples:
+              'メール送信成功':
+                value:
+                  email: 'test@example.com'
+      responses:
+        '200':
+          description: 'メール送信成功'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    nullable: false
+                    example: 'Password Reset mail send.'
+        '404':
+          description: 'ユーザーが見つからない場合'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    nullable: false
+                    example: 'User Not Found.'
+        '500':
+          description: 'メール送信に失敗した場合'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    nullable: false
+                    example: 'Send Mail Failed'
+
+  '/api/v1/auth/password-reset':
+    get:
+      tags:
+        - Auth
+      summary: 'パスワード変更トークン確認'
+      parameters:
+        - in: query
+          name: user_id
+          schema:
+            type: integer
+          required: true
+          description: 'ユーザーID'
+        - in: query
+          name: token
+          schema:
+            type: string
+          required: true
+          description: 'パスワード変更用トークン'
+      responses:
+        '200':
+          description: '認証成功'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    nullable: false
+                    example: '認証に成功しました。'
+        '404':
+          description: 'id, 有効なtokenからユーザーを見つけることができなかった場合'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    nullable: false
+                    example: 'URLの有効期限は30分です。'
+    post:
+      tags:
+        - Auth
+      summary: 'パスワード変更'
+      requestBody:
+        description: 'パスワード変更入力'
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                user_id:
+                  description: 'ユーザーID'
+                  type: integer
+                  format: int64
+                  nullable: false
+                token:
+                  description: 'パスワード変更トークン'
+                  type: string
+                  nullable: false
+                password:
+                  description: 'パスワード'
+                  type: string
+                  format: password
+                  nullable: false
+                  minLength: 8
+                  maxLength: 32
+                password_confirmation:
+                  description: 'パスワード再確認'
+                  type: string
+                  format: password
+                  nullable: false
+                  minLength: 8
+                  maxLength: 32
+              required:
+                - user_id
+                - token
+                - password
+                - password_confirmation
+            examples:
+              'パスワード変更成功':
+                value:
+                  user_id: 1
+                  token: 'hogehogehogehoge'
+                  password: 'Passw0rd'
+                  password_confirmation: 'Passw0rd'
+      responses:
+        '201':
+          description: 'パスワード変更成功'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    nullable: false
+                    example: 'パスワードを変更しました。'
+        '404':
+          description: 'ID, tokenによっていユーザーが見つからない場合'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    nullable: false
+                    example: 'User Not Found.'
+        '422':
+          description: 'POSTパラメータ異常によるバリデーションエラー'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errors:
+                    $ref: '#/components/schemas/422Error'
+
+  '/api/v1/auth/user':
+    get:
+      tags:
+        - Auth
+      summary: 'ログインユーザー取得'
+      responses:
+        '200':
+          description: 'ログインユーザー取得'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  user:
+                    $ref: '#/components/schemas/User'
+        '401':
+          description: '未ログイン'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    nullable: false
+                    example: 'unauthenticated.'
+
+  # 本人確認
+  '/api/v1/verify/email':
+    post:
+      tags:
+        - Verify
+      summary: 'メール認証リクエスト'
+      responses:
+        '200':
+          description: 'メール送信成功'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    nullable: false
+                    example: '認証用メールを送信しました。'
+        '401':
+          description: '未ログイン'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    nullable: false
+                    example: 'unauthenticated.'
+        '403':
+          description: '認証済み'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    nullable: false
+                    example: 'authorized.'
+
+  '/api/v1/verify/email-complete':
+    post:
+      tags:
+        - Verify
+      summary: 'メール認証完了'
+      requestBody:
+        description: '認証番号の入力'
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                token:
+                  description: 'メールアドレス認証番号'
+                  type: string
+                  nullable: false
+                  minLength: 6
+                  maxLength: 6
+              required:
+                - token
+            examples:
+              'メールアドレス認証トークン':
+                value:
+                  token: '123456'
+      responses:
+        '201':
+          description: '認証成功'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  user:
+                    $ref: '#/components/schemas/User'
+        '401':
+          description: '未ログイン'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    nullable: false
+                    example: 'unauthenticated'
+        '404':
+          description: 'トークンが見つからない'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    nullable: false
+                    example: '有効な認証番号が見つかりません。'
+
+  '/api/v1/verify/phone':
+    post:
+      tags:
+        - Verify
+      summary: '電話番号認証リクエスト'
+      requestBody:
+        description: '電話番号の入力'
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                country_code:
+                  description: '国コード'
+                  type: string
+                  nullable: false
+                phone_number:
+                  description: '電話番号'
+                  type: string
+                  nullable: false
+              required:
+                - country_code
+                - phone_number
+            examples:
+              '電話番号入力':
+                value:
+                  country_code: '81'
+                  phone_number: '08081238287'
+      responses:
+        '201':
+          description: 'SMSメッセージ送信成功'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    nullable: false
+                    example: 'SMSを送信しました。'
+        '401':
+          description: '未ログイン'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    nullable: false
+                    example: 'unauthenticated'
+        '422':
+          description: '電話番号がおかしい'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errors:
+                    $ref: '#/components/schemas/422Error'
+
+  '/api/v1/verify/phone-complete':
+    post:
+      tags:
+        - Verify
+      summary: '電話番号認証完了'
+      requestBody:
+        description: '認証番号の入力'
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                token:
+                  description: '電話番号認証番号'
+                  type: string
+                  nullable: false
+                  minLength: 6
+                  maxLength: 6
+              required:
+                - token
+            examples:
+              '電話番号認証トークン':
+                value:
+                  token: '123456'
+      responses:
+        '201':
+          description: '認証成功'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  user:
+                    $ref: '#/components/schemas/User'
+        '401':
+          description: '未ログイン'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    nullable: false
+                    example: 'unauthenticated'
+        '404':
+          description: 'トークンが見つからない'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    nullable: false
+                    example: '有効な認証番号が見つかりません。'
+
+  '/api/v1/verify/identification':
+    post:
+      tags:
+        - Verify
+      summary: '身分証明証確認リクエスト'
+      requestBody:
+        description: '身分証'
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                front_image:
+                  description: '画像1'
+                  type: string
+                  format: binary
+                  nullable: false
+                behind_image:
+                  description: '画像2'
+                  type: string
+                  format: binary
+                  nullable: false
+              required:
+                - front_image
+                - behind_image
+            examples:
+              '身分証明証':
+                value:
+                  front_image: 'front.jpeg'
+                  behind_image: 'behind.jpeg'
+      responses:
+        '201':
+          description: '身分証保存成功'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    nullable: false
+                    example: '身分証を登録しました。'
+        '401':
+          description: '未ログイン'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    nullable: false
+                    example: 'unauthenticated'
+
+  '/api/v1/verify/twitter':
+    get:
+      tags:
+        - Verify
+      summary: 'Twitter連携'
+      responses:
+        '200':
+          description: 'Twitter oauth URL発行成功'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  url:
+                    nullable: false
+                    example: 'https://api.twitter.com/hoge/hoge'
+
+  '/api/v1/verify/twitter-callback':
+    get:
+      tags:
+        - Verify
+      summary: 'Twitter連携 CALLBACK'
+      parameters:
+        - in: query
+          name: oauth_token
+          schema:
+            type: string
+          required: true
+          description: 'oauth token'
+        - in: query
+          name: oauth_verifier
+          schema:
+            type: string
+          required: true
+          description: 'oauth verifier'
+      responses:
+        '200':
+          description: 'Twitter連携'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  user:
+                    $ref: '#/components/schemas/User'
+        '401':
+          description: '未ログイン'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    nullable: false
+                    example: 'unauthenticated'
+        '403':
+          description: '複数回同じoauth_token, oauth_verifierを使用した'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    nullable: false
+                    example: 'Multiple request not allowed'
+
+  # ユーザー系
+  '/api/v1/users/{user_id}':
+    get:
+      tags:
+        - User
+      summary: 'ユーザー情報取得'
+      parameters:
+        - name: user_id
+          in: path
+          description: 'ユーザーID'
+          schema:
+            type: integer
+          required: true
+      responses:
+        '200':
+          description: 'ログインユーザー取得'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  user:
+                    $ref: '#/components/schemas/User'
+        '401':
+          description: '未ログイン'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    nullable: false
+                    example: 'unauthenticated.'
+        '404':
+          description: 'Not Found'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    nullable: false
+                    example: 'User Not Found.'
+
+    put:
+      tags:
+        - User
+      summary: 'ユーザー情報更新'
+      parameters:
+        - name: user_id
+          in: path
+          description: 'ユーザーID'
+          schema:
+            type: integer
+          required: true
+      requestBody:
+        description: '更新情報の入力。更新するプロパティのみ入力する。'
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  description: 'ユーザーネーム'
+                  type: string
+                  nullable: false
+                  minLength: 1
+                  maxLength: 255
+                birthday:
+                  description: '生年月日'
+                  type: string
+                  format: date
+                  nullable: false
+                gender:
+                  description: '性別 1:男性, 2:女性'
+                  type: integer
+                  nullable: false
+                  minimum: 1
+                  maximum: 2
+                height:
+                  description: '身長'
+                  type: integer
+                  nullable: false
+                  minimum: 50
+                  maximum: 300
+                weight:
+                  description: '体重'
+                  type: integer
+                  nullable: false
+                  minimum: 1
+                  maximum: 1000
+                body_shape:
+                  description: '体型'
+                  type: integer
+                  nullable: false
+                  minimum: -2
+                  maximum: 2
+                experienced_count:
+                  description: '経験人数'
+                  type: integer
+                  nullable: false
+                  minimum: 0
+                prefecture:
+                  description: '都道府県'
+                  type: integer
+                  nullable: false
+                  minimum: 1
+                  maximum: 47
+                email:
+                  description: 'メールアドレス。変更された場合は認証ステータスを0にする。'
+                  type: string
+                  format: email
+                  nullable: false
+                  minLength: 1
+                  maxLength: 255
+                password:
+                  description: 'パスワード'
+                  type: string
+                  format: password
+                  nullable: false
+                  minLength: 8
+                  maxLength: 32
+                password_confirmation:
+                  description: 'パスワード再確認'
+                  type: string
+                  format: password
+                  nullable: false
+                  minLength: 8
+                  maxLength: 32
+                is_filmable:
+                  description: '撮影の可否'
+                  type: boolean
+                  nullable: false
+                is_contact_required:
+                  description: '事前連絡の要否'
+                  type: boolean
+                  nullable: false
+                is_photo_exchange_required:
+                  description: '事前写真交換の要否'
+                  type: boolean
+                  nullable: false
+                matchable_min:
+                  description: 'マッチング最小年齢'
+                  type: integer
+                  nullable: false
+                  minimum: 18
+                  maximum: 100
+                matchable_max:
+                  description: 'マッチング最大年齢'
+                  type: integer
+                  nullable: false
+                  minimum: 18
+                  maximum: 100
+                activated_at:
+                  description: '活動開始時間'
+                  type: string
+                  format: time
+                  nullable: false
+                unactivated_at:
+                  description: '活動終了時間'
+                  type: string
+                  format: time
+                  nullable: false
+            examples:
+              'ニックネームの変更':
+                value:
+                  name: 'テスト二郎'
+              '生年月日の変更':
+                value:
+                  birthday: '1991-06-25'
+              '体重、体型の変更':
+                value:
+                  weight: '100'
+                  body_shape: '2'
+      responses:
+        '201':
+          description: '更新成功'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  user:
+                    $ref: '#/components/schemas/User'
+        '401':
+          description: '未ログイン'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    nullable: false
+                    example: 'unauthenticated.'
+        '403':
+          description: 'Not Found'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    nullable: false
+                    example: 'Forbidden'
+        '404':
+          description: 'Not Found'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    nullable: false
+                    example: 'User Not Found.'
+        '422':
+          description: 'POSTパラメータ異常によるバリデーションエラー'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errors:
+                    $ref: '#/components/schemas/422Error'
+
+    delete:
+      tags:
+        - User
+      summary: 'ユーザー削除(退会)'
+      parameters:
+        - name: user_id
+          in: path
+          description: 'ユーザーID'
+          schema:
+            type: integer
+          required: true
+      responses:
+        '200':
+          description: 'ユーザー削除'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    nullable: false
+                    example: 'User Deleted.'
+        '401':
+          description: '未ログイン'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    nullable: false
+                    example: 'unauthenticated.'
+        '403':
+          description: 'Forbidden'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    nullable: false
+                    example: 'Forbidden.'
+        '404':
+          description: 'Not Found'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    nullable: false
+                    example: 'User Not Found.'
+
+  '/api/v1/users/{user_id}/active-areas':
+    get:
+      tags:
+        - User
+      summary: 'ユーザーの活動範囲取得'
+      parameters:
+        - name: user_id
+          in: path
+          description: 'ユーザーID'
+          schema:
+            type: integer
+          required: true
+      responses:
+        '200':
+          description: '活動範囲取得'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  active_areas:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ActiveAreas'
+        '401':
+          description: '未ログイン'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    nullable: false
+                    example: 'unauthenticated.'
+        '404':
+          description: 'Not Found'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    nullable: false
+                    example: 'User Not Found.'
+
+    post:
+      tags:
+        - User
+      summary: 'ユーザーの活動範囲保存'
+      parameters:
+        - name: user_id
+          in: path
+          description: 'ユーザーID'
+          schema:
+            type: integer
+          required: true
+      requestBody:
+        description: '活動範囲の入力'
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                active_areas:
+                  description: '活動範囲'
+                  type: array
+                  nullable: false
+                  items:
+                    description: '市区町村コード'
+                    type: string
+                    example: "13"
+              required:
+                - active_areas
+      responses:
+        '201':
+          description: '更新成功'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  active_areas:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ActiveAreas'
+        '401':
+          description: '未ログイン'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    nullable: false
+                    example: 'unauthenticated.'
+        '403':
+          description: 'Not Found'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    nullable: false
+                    example: 'Forbidden'
+        '404':
+          description: 'Not Found'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    nullable: false
+                    example: 'User Not Found.'
+        '422':
+          description: 'POSTパラメータ異常によるバリデーションエラー'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errors:
+                    $ref: '#/components/schemas/422Error'
+
+  '/api/v1/users/{user_id}/active-weekdays':
+    get:
+      tags:
+        - User
+      summary: 'ユーザーの活動曜日取得'
+      parameters:
+        - name: user_id
+          in: path
+          description: 'ユーザーID'
+          schema:
+            type: integer
+          required: true
+      responses:
+        '200':
+          description: '活動曜日取得'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  active_weekdays:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ActiveWeekDays'
+        '401':
+          description: '未ログイン'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    nullable: false
+                    example: 'unauthenticated.'
+        '404':
+          description: 'Not Found'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    nullable: false
+                    example: 'User Not Found.'
+
+    post:
+      tags:
+        - User
+      summary: 'ユーザーの活動曜日保存'
+      parameters:
+        - name: user_id
+          in: path
+          description: 'ユーザーID'
+          schema:
+            type: integer
+          required: true
+      requestBody:
+        description: '活動曜日の入力'
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                active_weekdays:
+                  description: '活動曜日'
+                  type: array
+                  nullable: false
+                  items:
+                    description: '曜日番号'
+                    type: integer
+                    example: 0
+              required:
+                - active_weekdays
+      responses:
+        '201':
+          description: '更新成功'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  active_weekdays:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ActiveWeekDays'
+        '401':
+          description: '未ログイン'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    nullable: false
+                    example: 'unauthenticated.'
+        '403':
+          description: 'Not Found'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    nullable: false
+                    example: 'Forbidden'
+        '404':
+          description: 'Not Found'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    nullable: false
+                    example: 'User Not Found.'
+        '422':
+          description: 'POSTパラメータ異常によるバリデーションエラー'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errors:
+                    $ref: '#/components/schemas/422Error'
+
+  '/api/v1/users/{user_id}/sexualities':
+    get:
+      tags:
+        - User
+      summary: 'ユーザーの性癖取得'
+      parameters:
+        - name: user_id
+          in: path
+          description: 'ユーザーID'
+          schema:
+            type: integer
+          required: true
+      responses:
+        '200':
+          description: '性癖取得'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sexuality:
+                    $ref: '#/components/schemas/Sexuality'
+        '401':
+          description: '未ログイン'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    nullable: false
+                    example: 'unauthenticated.'
+        '404':
+          description: 'Not Found'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    nullable: false
+                    example: 'User Not Found.'
+
+    post:
+      tags:
+        - User
+      summary: 'ユーザーの性癖情報保存'
+      parameters:
+        - name: user_id
+          in: path
+          description: 'ユーザーID'
+          schema:
+            type: integer
+          required: true
+      requestBody:
+        description: '性癖保存成功'
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                sadochism_point:
+                  description: 'S度'
+                  type: integer
+                  nullable: false
+                  minimum: 0
+                  maximum: 5
+                masochism_point:
+                  description: 'M度'
+                  type: integer
+                  nullable: false
+                  minimum: 0
+                  maximum: 5
+                fellatio_point:
+                  description: 'フェラチオが好きか'
+                  type: integer
+                  nullable: false
+                  minimum: -2
+                  maximum: 2
+                cunnilingus_point:
+                  description: 'クンニリングスが好きか'
+                  type: integer
+                  nullable: false
+                  minimum: -2
+                  maximum: 2
+                neck_strangle_point:
+                  description: '首絞めが好きか'
+                  type: integer
+                  nullable: false
+                  minimum: -2
+                  maximum: 2
+                bite_point:
+                  description: '噛む性癖が好きか'
+                  type: integer
+                  nullable: false
+                  minimum: -2
+                  maximum: 2
+                hypnotism_point:
+                  description: '催眠が好きか'
+                  type: integer
+                  nullable: false
+                  minimum: -2
+                  maximum: 2
+                anus_point:
+                  description: 'アナルが好きか'
+                  type: integer
+                  nullable: false
+                  minimum: -2
+                  maximum: 2
+                torture_by_words_point:
+                  description: '言葉責めが好きか'
+                  type: integer
+                  nullable: false
+                  minimum: -2
+                  maximum: 2
+                spanking_point:
+                  description: 'スパンキングが好きか'
+                  type: integer
+                  nullable: false
+                  minimum: -2
+                  maximum: 2
+                outdoor_point:
+                  description: '青姦が好きか'
+                  type: integer
+                  nullable: false
+                  minimum: -2
+                  maximum: 2
+                squirting_point:
+                  description: '女性の潮吹きが好きか'
+                  type: integer
+                  nullable: false
+                  minimum: -2
+                  maximum: 2
+                multiple_point:
+                  description: '乱行が好きか'
+                  type: integer
+                  nullable: false
+                  minimum: -2
+                  maximum: 2
+                cosplay_point:
+                  description: 'コスプレが好きか'
+                  type: integer
+                  nullable: false
+                  minimum: -2
+                  maximum: 2
+                toy_point:
+                  description: 'おもちゃが好きか'
+                  type: integer
+                  nullable: false
+                  minimum: -2
+                  maximum: 2
+                kiss_point:
+                  description: 'キスが好きか'
+                  type: integer
+                  nullable: false
+                  minimum: -2
+                  maximum: 2
+                lovey_point:
+                  description: 'イチャイチャが好きか'
+                  type: integer
+                  nullable: false
+                  minimum: -2
+                  maximum: 2
+                deepthroat_point:
+                  description: 'イマラチオは好きか'
+                  type: integer
+                  nullable: false
+                  minimum: -2
+                  maximum: 2
+                drink_sperm_point:
+                  description: '精飲は好きか'
+                  type: integer
+                  nullable: false
+                  minimum: -2
+                  maximum: 2
+              required:
+                - sadochism_point
+                - masochism_point
+                - fellatio_point
+                - cunnilingus_point
+                - neck_strangle_point
+                - bite_point
+                - hypnotism_point
+                - anus_point
+                - torture_by_words_point
+                - spanking_point
+                - outdoor_point
+                - squirting_point
+                - multiple_point
+                - cosplay_point
+                - toy_point
+                - kiss_point
+                - lovey_point
+                - deepthroat_point
+                - drink_sperm_point
+            examples:
+              '性癖保存成功':
+                value:
+                  sadochism_point: 1
+                  masochism_point: 2
+                  fellatio_point: 2
+                  cunnilingus_point: -2
+                  neck_strangle_point: -2
+                  bite_point: -2
+                  hypnotism_point: -2
+                  anus_point: -1
+                  torture_by_words_point: 1
+                  spanking_point: -2
+                  outdoor_point: -2
+                  squirting_point: 1
+                  multiple_point: -2
+                  cosplay_point: 2
+                  toy_point: 2
+                  kiss_point: 2
+                  lovey_point: 2
+                  deepthroat_point: 2
+                  drink_sperm_point: 2
+      responses:
+        '201':
+          description: '性癖保存成功'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sexuality:
+                    $ref: '#/components/schemas/Sexuality'
+        '401':
+          description: '未ログイン'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    nullable: false
+                    example: 'unauthenticated.'
+        '403':
+          description: '作成済み'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    nullable: false
+                    example: 'Already Exists.'
+        '404':
+          description: 'Not Found'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    nullable: false
+                    example: 'User Not Found.'
+        '422':
+          description: 'POSTパラメータ異常によるバリデーションエラー'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errors:
+                    $ref: '#/components/schemas/422Error'
+
+  '/api/v1/users/{user_id}/sexualities/{sexuality_id}':
+    put:
+      tags:
+        - User
+      summary: 'ユーザーの性癖情報更新'
+      parameters:
+        - name: user_id
+          in: path
+          description: 'ユーザーID'
+          schema:
+            type: integer
+          required: true
+        - name: sexuality_id
+          in: path
+          description: '性癖ID'
+          schema:
+            type: integer
+          required: true
+      requestBody:
+        description: '性癖保存成功'
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                sadochism_point:
+                  description: 'S度'
+                  type: integer
+                  nullable: false
+                  minimum: 0
+                  maximum: 5
+                masochism_point:
+                  description: 'M度'
+                  type: integer
+                  nullable: false
+                  minimum: 0
+                  maximum: 5
+                fellatio_point:
+                  description: 'フェラチオが好きか'
+                  type: integer
+                  nullable: false
+                  minimum: -2
+                  maximum: 2
+                cunnilingus_point:
+                  description: 'クンニリングスが好きか'
+                  type: integer
+                  nullable: false
+                  minimum: -2
+                  maximum: 2
+                neck_strangle_point:
+                  description: '首絞めが好きか'
+                  type: integer
+                  nullable: false
+                  minimum: -2
+                  maximum: 2
+                bite_point:
+                  description: '噛む性癖が好きか'
+                  type: integer
+                  nullable: false
+                  minimum: -2
+                  maximum: 2
+                hypnotism_point:
+                  description: '催眠が好きか'
+                  type: integer
+                  nullable: false
+                  minimum: -2
+                  maximum: 2
+                anus_point:
+                  description: 'アナルが好きか'
+                  type: integer
+                  nullable: false
+                  minimum: -2
+                  maximum: 2
+                torture_by_words_point:
+                  description: '言葉責めが好きか'
+                  type: integer
+                  nullable: false
+                  minimum: -2
+                  maximum: 2
+                spanking_point:
+                  description: 'スパンキングが好きか'
+                  type: integer
+                  nullable: false
+                  minimum: -2
+                  maximum: 2
+                outdoor_point:
+                  description: '青姦が好きか'
+                  type: integer
+                  nullable: false
+                  minimum: -2
+                  maximum: 2
+                squirting_point:
+                  description: '女性の潮吹きが好きか'
+                  type: integer
+                  nullable: false
+                  minimum: -2
+                  maximum: 2
+                multiple_point:
+                  description: '乱行が好きか'
+                  type: integer
+                  nullable: false
+                  minimum: -2
+                  maximum: 2
+                cosplay_point:
+                  description: 'コスプレが好きか'
+                  type: integer
+                  nullable: false
+                  minimum: -2
+                  maximum: 2
+                toy_point:
+                  description: 'おもちゃが好きか'
+                  type: integer
+                  nullable: false
+                  minimum: -2
+                  maximum: 2
+                kiss_point:
+                  description: 'キスが好きか'
+                  type: integer
+                  nullable: false
+                  minimum: -2
+                  maximum: 2
+                lovey_point:
+                  description: 'イチャイチャが好きか'
+                  type: integer
+                  nullable: false
+                  minimum: -2
+                  maximum: 2
+                deepthroat_point:
+                  description: 'イマラチオは好きか'
+                  type: integer
+                  nullable: false
+                  minimum: -2
+                  maximum: 2
+                drink_sperm_point:
+                  description: '精飲は好きか'
+                  type: integer
+                  nullable: false
+                  minimum: -2
+                  maximum: 2
+            examples:
+              'SM度更新':
+                value:
+                  sadochism_point: 1
+                  masochism_point: 2
+      responses:
+        '201':
+          description: '性癖保存成功'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sexuality:
+                    $ref: '#/components/schemas/Sexuality'
+        '401':
+          description: '未ログイン'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    nullable: false
+                    example: 'unauthenticated.'
+        '403':
+          description: '自分の性癖ではない'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    nullable: false
+                    example: 'Forbidden.'
+        '404':
+          description: 'Not Found'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    nullable: false
+                    example: 'User Not Found.'
+        '422':
+          description: 'POSTパラメータ異常によるバリデーションエラー'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errors:
+                    $ref: '#/components/schemas/422Error'
+
+  '/api/v1/users/{user_id}/profile-images':
+    get:
+      tags:
+        - User
+      summary: 'ユーザーのプロフィール画像取得'
+      parameters:
+        - name: user_id
+          in: path
+          description: 'ユーザーID'
+          schema:
+            type: integer
+          required: true
+      responses:
+        '200':
+          description: 'プロフィール画像取得'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  profile_images:
+                    $ref: '#/components/schemas/ProfileImages'
+
+        '401':
+          description: '未ログイン'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    nullable: false
+                    example: 'unauthenticated.'
+        '404':
+          description: 'Not Found'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    nullable: false
+                    example: 'User Not Found.'
+
+    post:
+      tags:
+        - User
+      summary: 'ユーザーのプロフィール画像保存'
+      parameters:
+        - name: user_id
+          in: path
+          description: 'ユーザーID'
+          schema:
+            type: integer
+          required: true
+      requestBody:
+        description: 'プロフィール画像の入力'
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                image:
+                  description: '画像'
+                  type: string
+                  format: binary
+                  nullable: false
+                order:
+                  description: '表示順'
+                  type: integer
+                  nullable: false
+              required:
+                - image
+                - order
+            examples:
+              '画像登録':
+                value:
+                  image: 'image1.jpeg'
+                  order: 1
+      responses:
+        '201':
+          description: '更新成功'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  active_weekdays:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ProfileImages'
+        '401':
+          description: '未ログイン'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    nullable: false
+                    example: 'unauthenticated.'
+        '404':
+          description: 'Not Found'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    nullable: false
+                    example: 'User Not Found.'
+        '422':
+          description: 'POSTパラメータ異常によるバリデーションエラー'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errors:
+                    $ref: '#/components/schemas/422Error'
+
+  '/api/v1/users/{user_id}/sexual-preferences':
+    get:
+      tags:
+        - Sexual
+      summary: 'ユーザーの相手に求める条件取得'
+      parameters:
+        - name: user_id
+          in: path
+          description: 'ユーザーID'
+          schema:
+            type: integer
+          required: true
+      responses:
+        '200':
+          description: '求める条件取得'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sexual_preferences:
+                    $ref: '#/components/schemas/SexualPreferences'
+        '404':
+          description: 'Not Found'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    nullable: false
+                    example: 'User Not Found.'
+        '401':
+          description: '未ログイン'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    nullable: false
+                    example: 'unauthenticated.'
+  # 決済情報
+  # '/api/v1/payment-methods':
+  #   get:
+  #     tags:
+  #       - Payment Method
+  #     summary: 'ユーザーの決済方法取得'
+
+  #   post:
+  #     tags:
+  #       - Payment Method
+  #     summary: 'ユーザーの決済方法保存'
+
+  # プラン
+  '/api/v1/plans':
+    get:
+      tags:
+        - Subscription
+      summary: 'サブスクリプションプラン取得'
+      responses:
+        '200':
+          description: 'プラン取得'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  plans:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Plan'
+
+  # クーポン
+  '/api/v1/use-coupon':
+    get:
+      tags:
+        - Coupon
+      summary: 'クーポン使用'
+      parameters:
+        - name: user_id
+          in: path
+          description: 'ユーザーID'
+          schema:
+            type: integer
+          required: true
+        - name: coupon_id
+          in: path
+          description: 'クーポンID'
+          schema:
+            type: integer
+          required: true
+      responses:
+        '200':
+          description: 'クーポン使用'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  coupon:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/UseCoupon'
+        '404':
+          description: 'Not Found'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    nullable: false
+                    example: 'User Not Found.'
+
+  # サブスクリプション
+  # '/api/v1/subscriptions':
+  #   post:
+  #     tags:
+  #       - Subscription
+  #     summary: 'サブスクリプション登録'
+
+  # '/api/v1/subscriptions/{subscription_id}':
+  #   delete:
+  #     tags:
+  #       - Subscription
+  #     summary: 'サブスクリプション解約'
+
+  # 注文確認
+  '/api/v1/orders':
+    get:
+      tags:
+      - Orders
+      summary: '決済履歴一覧取得'
+      responses:
+        '200':
+          description: '決算履歴一覧の取得'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  orders:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Order'
+        '401':
+          description: '未ログイン'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    nullable: false
+                    example: 'unauthenticated.'
+
+
+  '/api/v1/orders/{order_id}':
+    get:
+      tags:
+      - Orders
+      summary: '決済履歴詳細取得'
+      parameters:
+        - name: order_id
+          in: path
+          description: '注文履歴情報ID'
+          schema:
+            type: integer
+          required: true
+      responses:
+        '200':
+          description: '決済履歴詳細の取得に成功'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  order_details:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/OrderDetail'
+        '401':
+          description: '未ログイン'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    nullable: false
+                    example: 'unauthenticated.'
+        '404':
+          description: 'Not Found'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    nullable: false
+                    example: 'User Not Found.'
+
+  # 通知
+  '/api/v1/notiications':
+    get:
+      tags:
+      - Notifications
+      summary: '個人宛通知情報取得'
+      responses:
+        '200':
+          description: '個人宛通知情報取得'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  notifications:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Notification'
+        '401':
+          description: '未ログイン'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    nullable: false
+                    example: 'unauthenticated.'
+
+  # お知らせ
+  '/api/v1/informations':
+    get:
+      tags:
+      - Informations
+      summary: 'お知らせ情報取得'
+      responses:
+        '200':
+          description: 'お知らせ情報取得'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  notifications:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Information'
+
+  # 良いね
+  # '/api/v1/users/{user_id}/like':
+  #   post:
+  #     tags:
+  #     - Like
+  #     summary: 'ユーザーに対するいいねをする'
+
+  # '/api/v1/likes':
+  #   get:
+  #     tags:
+  #     - Like
+  #     summary: 'いいね一覧を取得する'
+
+  # '/api/v1/likes/{like_id}':
+  #   delete:
+  #     tags:
+  #     - Like
+  #     summary: 'いいねを削除する'
+
+  # '/api/v1/likes/{like_id}/accept':
+  #   get:
+  #     tags:
+  #     - Like
+  #     summary: 'いいねを受諾する'
+
+  # '/api/v1/likes/{like_id}/reject':
+  #   get:
+  #     tags:
+  #     - Like
+  #     summary: 'いいねを拒否する'
+
+  # マッチング一覧
+  '/api/v1/matches':
+    get:
+      tags:
+      - Match
+      summary: 'マッチングスレッド一覧を取得する'
+      responses:
+        '200':
+          description: 'マッチングスレッド一覧を取得'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  matches:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Match'
+                  match_count:
+                    type: integer
+                    example: 12
+
+        '401':
+          description: '未ログイン'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    nullable: false
+                    example: 'unauthenticated.'
+
+  '/api/v1/matches/{match_id}':
+    delete:
+      tags:
+      - Match
+      summary: 'マッチングスレッドを削除する(マッチングを解消する)'
+      parameters:
+        - name: match_id
+          in: path
+          description: 'マッチングID'
+          schema:
+            type: integer
+          required: true
+      responses:
+        '200':
+          description: 'マッチングスレッド削除成功'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    nullable: false
+                    example: 'Matching Thread Deleted.'
+        '401':
+          description: '未ログイン'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    nullable: false
+                    example: 'unauthenticated.'
+        '403':
+          description: 'Forbidden'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    nullable: false
+                    example: 'Forbidden.'
+        '404':
+          description: 'Not Found'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    nullable: false
+                    example: 'Match Not Found.'
+
+  # マッチングしたユーザー全員との間のメッセージ一覧
+  '/api/v1/matches/users/messages':
+    get:
+      tags:
+      - Match
+      summary: 'マッチングしたユーザー全員との間のメッセージ一覧を取得する'
+      responses:
+        '200':
+          description: 'マッチングしたユーザー全員との間のメッセージ一覧を取得'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  matching_users_messages:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/MatchingUsersMessages'
+
+        '401':
+          description: '未ログイン'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    nullable: false
+                    example: 'unauthenticated.'
+
+  # マッチングしたユーザーとの間のメッセージ一覧
+  '/api/v1/matches/{match_id}/messages':
+    get:
+      tags:
+      - Match
+      summary: 'マッチングスレッドメッセージ一覧を取得する'
+      parameters:
+        - name: match_id
+          in: path
+          description: 'マッチID'
+          schema:
+            type: integer
+          required: true
+      responses:
+        '200':
+          description: 'マッチングスレッドメッセージ一覧を取得する'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  match_messages:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/MatchMessages'
+
+        '401':
+          description: '未ログイン '
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    nullable: false
+                    example: 'unauthenticated.'
+
+    post:
+      tags:
+      - Match
+      summary: 'メッセージを送信する'
+      parameters:
+        - name: match_id
+          in: path
+          description: 'マッチID'
+          schema:
+            type: integer
+          required: true
+      requestBody:
+        description: 'メッセージの入力'
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                from_user_id:
+                  description: '送信元ユーザーID'
+                  type: integer
+                  example: 1
+                  nullable: false
+                to_user_id:
+                  description: '送信先ユーザーID'
+                  type: integer
+                  example: 2
+                  nullable: false
+                message:
+                  description: 'メッセージ'
+                  type: string
+                  example: 'こんにちは！'
+                  nullable: false
+              required:
+                - from_user_id
+                - to_user_id
+                - message
+      responses:
+        '201':
+          description: 'メッセージ保存成功'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    $ref: '#/components/schemas/MatchMessages'
+
+        '401':
+          description: '未ログイン'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    nullable: false
+                    example: 'unauthenticated.'
+
+        '422':
+          description: 'POSTパラメータ異常によるバリデーションエラー'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errors:
+                    $ref: '#/components/schemas/422Error'
+
+  '/api/v1/matches/{match_id}/messages/{message_id}':
+    delete:
+      tags:
+      - Match
+      summary: 'メッセージを削除する'
+      parameters:
+        - name: match_id
+          in: path
+          description: 'マッチングID'
+          schema:
+            type: integer
+          required: true
+        - name: message_id
+          in: path
+          description: 'メッセージID'
+          schema:
+            type: integer
+          required: true
+      responses:
+        '200':
+          description: 'メッセージ削除'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    nullable: false
+                    example: 'Message Deleted.'
+        '401':
+          description: '未ログイン'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    nullable: false
+                    example: 'unauthenticated.'
+        '403':
+          description: 'Forbidden'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    nullable: false
+                    example: 'Forbidden.'
+        '404':
+          description: 'Not Found'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    nullable: false
+                    example: 'Message Not Found.'
+
+
+
+  # レビュー
+  # '/api/v1/users/{user_id}/reviews':
+  #   get:
+  #     tags:
+  #     - Review
+  #     summary: 'レビューを取得する'
+
+  #   post:
+  #     tags:
+  #     - Review
+  #     summary: 'レビューを投稿する'
+
+  # 検索ロジック
+  # '/api/v1/search':
+  #   get:
+  #     tags:
+  #     - Search
+  #     summary: 'ユーザーを検索する'
+
+  # '/api/v1/recommend':
+  #   get:
+  #     tags:
+  #     - Search
+  #     summary: 'おすすめユーザーを取得する'
+
+  # ブロック
+  '/api/v1/users/blocks':
+    get:
+      tags:
+      - Block
+      summary: 'ブロックしたユーザー一覧を取得する'
+      responses:
+        '200':
+          description: 'ブロックしたユーザー一覧を取得成功'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  block_users:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/BlockUser'
+        '401':
+          description: '未ログイン'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    nullable: false
+                    example: 'unAuthenticated'
+
+  '/api/v1/users/{user_id}/block':
+    post:
+      tags:
+      - Block
+      summary: 'ユーザーをブロックする'
+      parameters:
+        - name: user_id
+          in: path
+          description: 'ユーザーID'
+          schema:
+            type: integer
+          required: true
+      responses:
+        '201':
+          description: 'ユーザーのブロックに成功'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    nullable: false
+                    example: 'ユーザーをブロックしました。'
+        '401':
+          description: '未ログイン'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    nullable: false
+                    example: 'unauthenticated.'
+        '403':
+          description: 'Not Found'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    nullable: false
+                    example: 'Forbidden'
+        '404':
+          description: 'Not Found'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    nullable: false
+                    example: 'User Not Found.'
+        '422':
+          description: 'POSTパラメータ異常によるバリデーションエラー'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errors:
+                    $ref: '#/components/schemas/422Error'
+
+  '/api/v1/users/{user_id}/unblock':
+    delete:
+      tags:
+      - Block
+      summary: 'ユーザーのブロックを解除する'
+      parameters:
+        - name: user_id
+          in: path
+          description: 'ユーザーID'
+          schema:
+            type: integer
+          required: true
+      responses:
+        '200':
+          description: 'ユーザーのブロック解除に成功'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    nullable: false
+                    example: 'ブロックを解除しました。'
+        '401':
+          description: '未ログイン'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    nullable: false
+                    example: 'unauthenticated.'
+        '403':
+          description: 'Forbidden'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    nullable: false
+                    example: 'Forbidden.'
+        '404':
+          description: 'Not Found'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    nullable: false
+                    example: 'Block User Not Found.'
+
+  # '/api/v1/blocks/{block_id}':
+  #   delete:
+  #     tags:
+  #     - Block
+  #     summary: 'ブロックしたユーザーをリストから削除する'
+
+  # 都道府県
+  '/api/v1/prefectures':
+    get:
+      tags:
+      - Prefecture
+      summary: '都道府県一覧を取得する'
+      responses:
+        '200':
+          description: '都道府県一覧取得'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  prefectures:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Prefecture'
+
+
+  '/api/v1/prefectures/{prefecture_code}':
+    get:
+      tags:
+      - Prefecture
+      summary: '市区町村一覧を取得する'
+      parameters:
+        - name: prefecture_code
+          in: path
+          description: '都道府県コード'
+          schema:
+            type: integer
+          required: true
+      responses:
+        '200':
+          description: '市区町村一覧を取得'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  notifications:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/City'
+
+  # 募集掲示板
+  # '/api/v1/boards':
+  #   get:
+  #     tags:
+  #     - Board
+  #     summary: '募集掲示板一覧を取得する'
+
+  # '/api/v1/boards/{board_id}':
+  #   get:
+  #     tags:
+  #     - Board
+  #     summary: '募集掲示板詳細を取得する'
+
+  #   post:
+  #     tags:
+  #     - Board
+  #     summary: '募集掲示板を投稿する'
+
+  #   delete:
+  #     tags:
+  #     - Board
+  #     summary: '募集掲示板を削除する'
+
+  # '/api/v1/boards/{board_id}/pv':
+  #   post:
+  #     tags:
+  #     - Board
+  #     summary: '募集掲示板閲覧数を増加させる'
+
+# components
+components:
+  schemas:
+    User:
+      description: 'ユーザー情報'
+      type: object
+      properties:
+        id:
+          description: 'ユーザーID'
+          type: integer
+          nullable: false
+          example: 1
+        name:
+          description: 'ユーザー名'
+          type: string
+          nullable: false
+          example: 'テスト太郎'
+        age:
+          description: '年齢'
+          type: integer
+          nullable: false
+          example: 25
+        gender:
+          description: '性別'
+          type: integer
+          nullable: false
+          example: 1
+        height:
+          description: '身長'
+          type: integer
+          nullable: false
+          example: 170
+        weight:
+          description: '体重'
+          type: integer
+          nullable: false
+          example: 65
+        body_shape:
+          description: '体型'
+          type: integer
+          nullable: false
+          example: 1
+        experienced_count:
+          description: '経験人数'
+          type: integer
+          nullable: false
+          example: 10
+        prefecture:
+          description: '都道府県'
+          type: integer
+          nullable: false
+          example: 13
+        is_filmable:
+          description: '撮影の可否'
+          type: boolean
+          nullable: false
+          example: false
+        is_contact_required:
+          description: '事前連絡の要否'
+          type: boolean
+          nullable: false
+          example: true
+        is_photo_exchange_required:
+          description: '事前写真交換の要否'
+          type: boolean
+          nullable: false
+          example: true
+        matchable_min:
+          description: 'マッチング最小年齢'
+          type: integer
+          nullable: false
+          example: 22
+        matchable_max:
+          description: 'マッチング最大年齢'
+          type: integer
+          nullable: false
+          example: 36
+        activated_at:
+          description: '活動開始時間'
+          type: string
+          format: time
+          nullable: false
+          example: '20:00:00'
+        unactivated_at:
+          description: '活動終了時間'
+          type: string
+          format: time
+          nullable: false
+          example: '26:00:00'
+        status:
+          description: '各種認証ステータス'
+          type: object
+          nullable: false
+          properties:
+            is_email_verified:
+              description: 'メール認証済みか'
+              type: boolean
+              nullable: false
+              example: true
+            is_phone_verified:
+              description: '電話番号認証済みか'
+              type: boolean
+              nullable: false
+              example: true
+            is_identity_verified:
+              description: '身分証明完了済みか'
+              type: boolean
+              nullable: false
+              example: true
+            is_service_available:
+              description: 'サブスク登録をしてサービスが使用可能になっているか'
+              type: boolean
+              nullable: false
+              example: true
+            has_payment_method:
+              description: '決済方法を登録しているか'
+              type: boolean
+              nullable: false
+              example: true
+      required:
+        - id
+        - name
+        - age
+        - gender
+        - height
+        - weight
+        - body_shape
+        - experienced_count
+        - prefecture
+        - is_filmable
+        - is_contact_required
+        - is_photo_exchange_required
+        - matchable_min
+        - matchable_max
+        - activated_at
+        - unactivated_at
+        - active_weekdays
+        - active_area
+        - status
+
+    Sexuality:
+      description: '性癖情報'
+      type: object
+      properties:
+        id:
+          description: '性癖ID'
+          type: integer
+          nullable: false
+          example: 1
+        sadochism_point:
+          description: 'S度'
+          type: integer
+          nullable: false
+          example: 1
+          minimum: 0
+          maximum: 5
+        masochism_point:
+          description: 'M度'
+          type: integer
+          nullable: false
+          example: 2
+          minimum: 0
+          maximum: 5
+        fellatio_point:
+          description: 'フェラチオが好きか'
+          type: integer
+          nullable: false
+          example: 1
+          minimum: -2
+          maximum: 2
+        cunnilingus_point:
+          description: 'クンニリングスが好きか'
+          type: integer
+          nullable: false
+          example: 1
+          minimum: -2
+          maximum: 2
+        neck_strangle_point:
+          description: '首絞めが好きか'
+          type: integer
+          nullable: false
+          example: 1
+          minimum: -2
+          maximum: 2
+        bite_point:
+          description: '噛む性癖が好きか'
+          type: integer
+          nullable: false
+          example: 1
+          minimum: -2
+          maximum: 2
+        hypnotism_point:
+          description: '催眠が好きか'
+          type: integer
+          nullable: false
+          example: 1
+          minimum: -2
+          maximum: 2
+        anus_point:
+          description: 'アナルが好きか'
+          type: integer
+          nullable: false
+          example: 1
+          minimum: -2
+          maximum: 2
+        torture_by_words_point:
+          description: '言葉責めが好きか'
+          type: integer
+          nullable: false
+          example: 1
+          minimum: -2
+          maximum: 2
+        spanking_point:
+          description: 'スパンキングが好きか'
+          type: integer
+          nullable: false
+          example: 1
+          minimum: -2
+          maximum: 2
+        outdoor_point:
+          description: '青姦が好きか'
+          type: integer
+          nullable: false
+          example: 1
+          minimum: -2
+          maximum: 2
+        squirting_point:
+          description: '女性の潮吹きが好きか'
+          type: integer
+          nullable: false
+          example: 1
+          minimum: -2
+          maximum: 2
+        multiple_point:
+          description: '乱行が好きか'
+          type: integer
+          nullable: false
+          example: 1
+          minimum: -2
+          maximum: 2
+        cosplay_point:
+          description: 'コスプレが好きか'
+          type: integer
+          nullable: false
+          example: 1
+          minimum: -2
+          maximum: 2
+        toy_point:
+          description: 'おもちゃが好きか'
+          type: integer
+          nullable: false
+          example: 1
+          minimum: -2
+          maximum: 2
+        kiss_point:
+          description: 'キスが好きか'
+          type: integer
+          nullable: false
+          example: 1
+          minimum: -2
+          maximum: 2
+        lovey_point:
+          description: 'イチャイチャが好きか'
+          type: integer
+          nullable: false
+          example: 1
+          minimum: -2
+          maximum: 2
+        deepthroat_point:
+          description: 'イマラチオは好きか'
+          type: integer
+          nullable: false
+          minimum: -2
+          maximum: 2
+        drink_sperm_point:
+          description: '精飲は好きか'
+          type: integer
+          nullable: false
+          minimum: -2
+          maximum: 2
+      required:
+        - sadochism_point
+        - masochism_point
+        - fellatio_point
+        - cunnilingus_point
+        - neck_strangle_point
+        - bite_point
+        - hypnotism_point
+        - anus_point
+        - torture_by_words_point
+        - spanking_point
+        - outdoor_point
+        - squirting_point
+        - multiple_point
+        - cosplay_point
+        - toy_point
+        - kiss_point
+        - lovey_point
+        - deepthroat_point
+        - drink_sperm_point
+
+    ActiveAreas:
+      type: object
+      properties:
+        code:
+          description: '市区町村コード'
+          type: string
+          nullable: false
+          example: 13
+        name:
+          description: '市区町村名'
+          type: string
+          nullable: false
+          example: '東京都全域'
+
+    ActiveWeekDays:
+      type: object
+      properties:
+        code:
+          description: '曜日番号'
+          type: integer
+          nullable: false
+          example: 0
+        name:
+          description: '曜日'
+          type: string
+          nullable: false
+          example: '日曜'
+
+    ProfileImages:
+      type: object
+      properties:
+        icon:
+          description: 'アイコン'
+          type: string
+          nullable: false
+          example: 'https://hogehoge.com/image1_icon.png'
+        image1:
+          description: '画像1'
+          type: string
+          nullable: false
+          example: 'https://hogehoge.com/image1.png'
+        image2:
+          description: '画像2'
+          type: string
+          nullable: false
+          example: 'https://hogehoge.com/image2.png'
+        image3:
+          description: '画像3'
+          type: string
+          nullable: false
+          example: 'https://hogehoge.com/image3.png'
+
+    Plan:
+      type: object
+      properties:
+        id:
+          description: 'Plan ID'
+          type: integer
+          nullable: false
+          example: 1
+        name:
+          description: 'Plan Name'
+          type: string
+          nullable: false
+          example: '1 month plan'
+        description:
+          description: 'Plan Description'
+          type: string
+          nullable: false
+          example: 'texttexttext'
+        price:
+          description: 'Plan Price'
+          type: integer
+          nullable: false
+          example: 1000
+        subscription_cycle:
+          description: 'Plan Cycle'
+          type: integer
+          nullable: false
+          example: 30
+
+    Notification:
+      type: object
+      properties:
+        id:
+          description: 'Notification ID'
+          type: integer
+          nullable: false
+          example: 1
+        body:
+          description: 'Notification Body'
+          type: array
+          items:
+            type: object
+            properties:
+              text:
+                type: string
+                nullable: false
+                example: 'hogehoge notification'
+              url:
+                type: string
+                nullable: false
+                example: 'https://google.com'
+        created_at:
+          description: 'Created Datetime'
+          type: string
+          nullable: false
+          example: '2022-02-02 00:00:00'
+
+    Prefecture:
+      type: object
+      properties:
+        code:
+          description: 'Prefecture Code'
+          type: integer
+          nullable: false
+          example: 1
+        name:
+          description: 'Prefecture Name'
+          type: string
+          nullable: false
+          example: '北海道'
+
+    City:
+      type: object
+      properties:
+        code:
+          description: 'City Code'
+          type: string
+          nullable: false
+          example: '13'
+        name:
+          description: 'City Name'
+          type: string
+          nullable: false
+          example: '東京都全域'
+
+    Information:
+      type: object
+      properties:
+        id:
+          description: 'Information ID'
+          type: integer
+          nullable: false
+          example: 1
+        body:
+          description: 'Notification Body'
+          type: array
+          items:
+            type: object
+            properties:
+              text:
+                type: string
+                nullable: false
+                example: 'hogehoge notification'
+              url:
+                type: string
+                nullable: false
+                example: 'https://google.com'
+        created_at:
+          description: 'Created Datetime'
+          type: string
+          nullable: false
+          example: '2022-02-02 00:00:00'
+
+    SexualPreferences:
+      description: '相手に求める条件'
+      type: object
+      properties:
+        is_contact_required:
+          description: '事前連絡の要否'
+          type: boolean
+          nullable: false
+        is_photo_exchange_required:
+          description: '事前写真交換の要否'
+          type: boolean
+          nullable: false
+        partner_age:
+          description: '相手の年齢'
+          type: integer
+          nullable: false
+        partner_body_shape:
+          description: '相手の体系'
+          type: integer
+          nullable: false
+
+    UseCoupon:
+      description: 'クーポン使用'
+      type: object
+      properties:
+        coupon_id:
+          description: 'クーポンID'
+          type: integer
+          nullable: false
+        user_id:
+          description: 'ユーザーID'
+          type: integer
+          nullable: false
+
+    Match:
+      type: object
+      properties:
+        id:
+          description: 'Match ID'
+          type: integer
+          nullable: false
+          example: 1
+        match_user_id:
+          description: 'Match User ID'
+          type: integer
+          nullable: false
+          example: 2
+        match_user_icon:
+          description: 'Match User Icon'
+          type: string
+          nullable: false
+          example: 'https://hogehoge.com/image1_icon.png'
+
+    MatchingUsersMessages:
+      type: object
+      properties:
+        name:
+          type: string
+          nullable: false
+          example: 'アウネちゃん'
+        user_icon:
+          description: '相手ユーザーのプロフィールアイコン'
+          type: string
+          nullable: false
+          example: 'https://hogehoge.com/image1_icon.png'
+        match_id:
+          description: 'Match ID'
+          type: integer
+          nullable: false
+          example: 1
+        message:
+          description: '二人の間で行った一番最新のメッセージ'
+          type: string
+          nullable: false
+          example: 'こんにちは'
+        message_created_at:
+          description: 'Created Datetime'
+          type: string
+          nullable: false
+          example: '2022-02-02 00:00:00'
+        from_user_id:
+          description: 'どちらのユーザーが送ったメッセージなのかを判別するためのid'
+          nullable: false
+          example: 1
+
+    MatchMessages:
+      type: object
+      properties:
+        id:
+          description: 'MatchMessage ID'
+          type: integer
+          nullable: false
+          example: 1
+        message:
+          description: 'メッセージ'
+          type: string
+          nullable: false
+          example: 'こんにちは'
+        message_created_at:
+          description: 'Created Datetime'
+          type: string
+          nullable: false
+          example: '2022-02-02 00:00:00'
+        match_id:
+          description: 'Match ID'
+          type: integer
+          nullable: false
+          example: 1
+        from_user_id:
+          description: 'どちらのユーザーが送ったメッセージなのかを判別するためのid'
+          nullable: false
+          example: 1
+
+    BlockUser:
+      description: 'ブロックしたユーザー'
+      type: object
+      properties:
+        block_user_id:
+          description: 'ブロックしたユーザーのID'
+          type: integer
+          nullable: false
+          example: 1
+        block_user_name:
+          description: 'ブロックしたユーザーの名前'
+          type: string
+          nullable: false
+          example: 'アウネちゃん'
+        block_user_icon:
+          description: 'ブロックしたユーザーのプロフィールアイコン'
+          type: string
+          nullable: false
+          example: 'https://hogehoge.com/image1_icon.png'
+        blocked_time:
+          description: 'ブロックした時間'
+          type: string
+          nullable: false
+          example: '2022-02-02 00:00:00'
+
+    Order:
+      description: '注文履歴情報'
+      type: object
+      properties:
+        id:
+          description: 'Order ID'
+          type: integer
+          nullable: false
+          example: 1
+        customer_user_id:
+          description: '注文者のUser ID'
+          type: integer
+          nullable: false
+          example: 1
+        customer_email:
+          description: '注文者のemailアドレス'
+          type: string
+          nullable: false
+          example: 'hogehoge@gmail.com'
+        customer_tel:
+          description: '注文者の電話番号'
+          type: string
+          nullable: false
+          example: '08000000000'
+        financial_status:
+          description: '決済済みかどうかの状態'
+          type: integer
+          nullable: false
+          example: 1
+        subtotal_line_items:
+          description: '小計(明細合計)'
+          type: integer
+          nullable: false
+          example: 20000
+        tax_price:
+          description: '消費税'
+          type: integer
+          nullable: false
+          example: 2000
+        total_discount:
+          description: '値引き合計'
+          type: integer
+          nullable: false
+          example: 500
+        total_price:
+          description: '合計金額'
+          type: integer
+          nullable: false
+          example: 21500
+        created_at:
+          description: 'Created Datetime'
+          type: string
+          nullable: false
+          example: '2022-02-02 00:00:00'
+
+    OrderDetail:
+      description: '注文商品詳細情報'
+      type: object
+      properties:
+        id:
+          description: '注文商品詳細ID'
+          type: integer
+          nullable: false
+          example: 1
+        order_id:
+          description: '注文履歴情報ID'
+          type: integer
+          nullable: false
+          example: 2
+        model:
+          description: '紐づくモデル'
+          type: string
+          nullable: false
+          example: "plans"
+        model_id:
+          description: '紐づくモデルのデータID 上のmodelがplansの場合plan id'
+          type: integer
+          nullable: false
+          example: 1
+        title:
+          description: 'その時の明細名'
+          type: string
+          nullable: false
+          example: "1ヶ月間有料会員プラン"
+        unit_price:
+          description: 'その時の金額'
+          type: integer
+          nullable: false
+          example: 12000
+        quantity:
+          description: '数量'
+          type: integer
+          nullable: false
+          example: 1
+        final_line_price:
+          description: '合計金額'
+          type: integer
+          nullable: false
+          example: 12000
+        created_at:
+          description: 'Created Datetime'
+          type: string
+          nullable: false
+          example: '2022-02-02 00:00:00'
+
+    422Error:
+      description: 'バリデーションエラー'
+      type: object
+      properties:
+        property1:
+          description: 'プロパティ名'
+          type: array
+          nullable: false
+          items:
+            description: 'エラーメッセージ'
+            type: string
+        property2:
+          description: 'プロパティ名'
+          type: array
+          nullable: false
+          items:
+            description: 'エラーメッセージ'
+            type: string
