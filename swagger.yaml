@@ -2561,7 +2561,7 @@ paths:
                       $ref: '#/components/schemas/Information'
 
   # 良いね
-    '/api/v1/users/{user_id}/like':
+    # '/api/v1/users/{user_id}/like':
     post:
       tags:
       - Like
@@ -3872,3 +3872,172 @@ components:
           items:
             description: 'エラーメッセージ'
             type: string
+  
+    Like:
+      description: 'アウネ情報'
+      type: object
+      properties:
+        id:
+          description: 'like ID'
+          type: integer
+          nullable: false
+          example: 1
+        from_user_id:
+          description: 'いいねしたユーザーID'
+          type: integer
+          nullable: false
+          example: 1
+        to_user_id:
+          description: 'いいねされたユーザーID'
+          type: integer
+          nullable: false
+          example: 1
+        matching result:
+          description: 'マッチング結果（-1:拒否, 0:未回答, 1:許可）'
+          type: integer
+          nullable: false
+          example: 1
+          minimum: -1
+          maximum: 1
+  
+    Dislike:
+      description: 'アワナイネ情報'
+      type: object
+      properties:
+        id:
+          description: 'dislike ID'
+          type: integer
+          nullable: false
+          example: 1
+        from_user_id:
+          description: 'いいねしたユーザーID'
+          type: integer
+          nullable: false
+          example: 1
+        to_user_id:
+          description: 'いいねされたユーザーID'
+          type: integer
+          nullable: false
+          example: 1
+  
+    PostLike:
+      description: 'アオウ情報'
+      type: object
+      properties:
+        id:
+          description: 'post_like ID'
+          type: integer
+          nullable: false
+          example: 1
+        post_id:
+          description: '応募した募集のID'
+          type: integer
+          nullable: false
+          example: 1
+        user_id:
+          description: '応募したユーザーのID'
+          type: integer
+          nullable: false
+          example: 1
+        wish_date:
+          description: '応募時に選択した日程'
+          type: string
+          nullable: false
+          example: '2022-02-02'
+        message:
+          description: '応募メッセージ'
+          type: string
+          nullable: false
+          example: 'こんにちわ！来週会いたいです！'
+        matching result:
+          description: 'マッチング結果（-1:拒否, 0:未回答, 1:許可）'
+          type: integer
+          nullable: false
+          example: 1
+          minimum: -1
+          maximum: 1
+
+    Post:
+      description: '募集情報'
+      type: object
+      properties:
+        id:
+          description: 'post ID'
+          type: integer
+          nullable: false
+          example: 1
+        user_id:
+          description: '募集作成したユーザーのID'
+          type: integer
+          nullable: false
+          example: 1
+
+    PostContents:
+      description: '募集のコンテンツ情報（作成途中）'
+      type: object
+      properties:
+        id:
+          description: 'post content ID'
+          type: integer
+          nullable: false
+          example: 1
+        post_id:
+          description: '募集のID'
+          type: integer
+          nullable: false
+          example: 1
+        wish_date:
+          description: '募集した日程'
+          type: string
+          nullable: false
+          example: '2022-02-02'
+        wish_at:
+          description: '時間帯'
+          type: string
+          nullable: false
+          example: '夕方'
+        area:
+          description: '場所'
+          type: string
+          nullable: false
+          example: '新宿'
+        message:
+          description: '募集メッセージ'
+          type: string
+          nullable: false
+          example: '新宿か渋谷で軽く飲みに行ってからホテルでゆっくりだらだら出来る人ー？？'
+
+    PostComments:
+      description: '募集のコメント情報（作成途中）'
+      type: object
+      properties:
+        id:
+          description: 'post content ID'
+          type: integer
+          nullable: false
+          example: 1
+        post_id:
+          description: '募集のID'
+          type: integer
+          nullable: false
+          example: 1
+        parent_comment_id:
+          description: '返信元コメントID'
+          type: integer
+          nullable: false
+          example: 1
+        from_user_id:
+          description: 'いいねしたユーザーID'
+          type: integer
+          nullable: false
+          example: 1
+        to_user_id:
+          description: 'いいねされたユーザーID'
+          type: integer
+          nullable: false
+          example: 1
+        message:
+          description: '募集のコメントメッセージ'
+          type: string
+          nullable: false
+          example: 'こんにちわ！来週会いたいです！'
