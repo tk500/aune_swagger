@@ -53,7 +53,16 @@ tags:
     description: お知らせ
 
   - name: Like
-    description: いいね
+    description: アウネ
+    
+  - name: Dislike
+    description: アワナイネ
+
+  - name: PostLike
+    description: アオウ（募集に対する応募）
+
+  - name: Post
+    description: 募集系
 
   - name: Match
     description: マッチング成約
@@ -2616,7 +2625,7 @@ paths:
       parameters:
         - name: like_id
           in: path
-          description: 'いいねID'
+          description: 'アウネID'
           schema:
             type: integer
           required: true
@@ -2641,7 +2650,7 @@ paths:
       parameters:
         - name: like_id
           in: path
-          description: 'いいねID'
+          description: 'アウネID'
           schema:
             type: integer
           required: true
@@ -2665,7 +2674,7 @@ paths:
       parameters:
         - name: like_id
           in: path
-          description: 'いいねID'
+          description: 'アウネID'
           schema:
             type: integer
           required: true
@@ -2684,7 +2693,7 @@ paths:
   '/api/v1/dislikes':
     get:
       tags:
-      - Like
+      - Dislike
       summary: 'アワナイネの一覧を取得'
       responses:
         '200':
@@ -2703,7 +2712,7 @@ paths:
   '/api/v1/dislike/{user_id}':
     post:
       tags:
-      - Like
+      - Dislike
       summary: 'アワナイネを送る'
       parameters:
         - name: user_id
@@ -2727,7 +2736,7 @@ paths:
   '/api/v1/post_likes':
     get:
       tags:
-      - Like
+      - PostLike
       summary: 'アオウの一覧を取得'
       responses:
         '200':
@@ -2746,7 +2755,7 @@ paths:
   '/api/v1/post_likes/rejected':
     get:
       tags:
-      - Like
+      - PostLike
       summary: '拒否したアオウの一覧を取得'
       responses:
         '200':
@@ -2765,7 +2774,7 @@ paths:
   '/api/v1/post_like/{post_id}':
     post:
       tags:
-      - Like
+      - PostLike
       summary: '募集掲示板応募（アオウを送る）'
       parameters:
         - name: post_id
@@ -2789,7 +2798,7 @@ paths:
   '/api/v1/post/like/{post_like_id}/accept':
     post:
       tags:
-      - Like
+      - PostLike
       summary: 'アオウを許可する'
       parameters:
         - name: post_like_id
@@ -2813,7 +2822,7 @@ paths:
   '/api/v1/post/like/{post_like_id}/reject':
     post:
       tags:
-      - Like
+      - PostLike
       summary: 'アオウを拒否する'
       parameters:
       - name: post_like_id
@@ -2834,84 +2843,6 @@ paths:
                   $ref: '#/components/schemas/PostLike'
 
 
-  # 募集掲示板一覧取得
-  '/api/v1/posts':
-    get:
-      tags:
-      - Like
-      summary: '募集掲示板一覧取得'
-      responses:
-        '200':
-          description: '募集掲示板一覧取得'
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  posts:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/Post'
-    post:
-      tags:
-      - Like
-      summary: '掲示板作成'
-      responses:
-        '200':
-          description: '募集掲示板の作成'
-          content:
-            applicaition/json:
-              schema:
-                type: object
-                properties:
-                  post:
-                    $ref: '#/components/schemas/Post'
-
-  # 募集掲示板詳細取得
-  '/api/v1/posts/{post_id}/contents':
-    get:
-      tags:
-      - Like
-      summary: '募集掲示板詳細取得'
-      parameters:
-        - name: post_id
-          in: path
-          description: '募集ID'
-          schema:
-            type: integer
-          required: true
-      responses:
-        '200':
-          description: '募集掲示板詳細取得'
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  posts:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/Post'  
-  
-  #アオウした募集一覧を見る
-  '/api/v1/posts/sent_post_like':
-    get:
-      tags:
-      - Like
-      summary: 'アオウした募集一覧を見る'
-      responses:
-        '200':
-          description: 'アオウした募集一覧を取得'
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  posts:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/Post'  
-  
   # 良いね
   # '/api/v1/users/{user_id}/like':
   #   post:
@@ -3479,6 +3410,92 @@ paths:
   #     tags:
   #     - Board
   #     summary: '募集掲示板閲覧数を増加させる'
+  
+  
+  # 募集掲示板一覧取得
+  '/api/v1/posts':
+    get:
+      tags:
+      - Post
+      summary: '募集掲示板一覧取得'
+      responses:
+        '200':
+          description: '募集掲示板一覧取得'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  posts:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Post'
+    post:
+      tags:
+      - Post
+      summary: '掲示板作成'
+      responses:
+        '200':
+          description: '募集掲示板の作成'
+          content:
+            applicaition/json:
+              schema:
+                type: object
+                properties:
+                  post:
+                    $ref: '#/components/schemas/Post'
+                  post_contents:
+                    $ref: '#/components/schemas/PostContents'
+                  post_comments:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/PostComments'
+
+  # 募集掲示板詳細取得
+  '/api/v1/posts/{post_id}/contents':
+    get:
+      tags:
+      - Post
+      summary: '募集掲示板詳細取得'
+      parameters:
+        - name: post_id
+          in: path
+          description: '募集ID'
+          schema:
+            type: integer
+          required: true
+      responses:
+        '200':
+          description: '募集掲示板詳細取得'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  posts:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Post'  
+  
+  #アオウした募集一覧を見る
+  '/api/v1/posts/sent_post_like':
+    get:
+      tags:
+      - Post
+      summary: 'アオウした募集一覧を見る'
+      responses:
+        '200':
+          description: 'アオウした募集一覧を取得'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  posts:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Post'  
+  
 
 # components
 components:
@@ -4218,12 +4235,12 @@ components:
           nullable: false
           example: 1
         from_user_id:
-          description: 'いいねしたユーザーID'
+          description: 'アウネしたユーザーID'
           type: integer
           nullable: false
           example: 1
         to_user_id:
-          description: 'いいねされたユーザーID'
+          description: 'アウネされたユーザーID'
           type: integer
           nullable: false
           example: 1
@@ -4245,12 +4262,12 @@ components:
           nullable: false
           example: 1
         from_user_id:
-          description: 'いいねしたユーザーID'
+          description: 'アウネしたユーザーID'
           type: integer
           nullable: false
           example: 1
         to_user_id:
-          description: 'いいねされたユーザーID'
+          description: 'アウネされたユーザーID'
           type: integer
           nullable: false
           example: 1
@@ -4362,12 +4379,12 @@ components:
           nullable: false
           example: 1
         from_user_id:
-          description: 'いいねしたユーザーID'
+          description: 'アウネしたユーザーID'
           type: integer
           nullable: false
           example: 1
         to_user_id:
-          description: 'いいねされたユーザーID'
+          description: 'アウネされたユーザーID'
           type: integer
           nullable: false
           example: 1
