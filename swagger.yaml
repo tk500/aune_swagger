@@ -15,6 +15,9 @@ info:
 
 # Server Description
 servers:
+  # Added by API Auto Mocking Plugin
+  - description: SwaggerHub API Auto Mocking
+    url: https://virtserver.swaggerhub.com/SUPPORT_23/hibanatest/1.0.1-oas3
   - url: 'http://localhost:3000'
 
   - url: 'https://virtserver.swaggerhub.com/ISHITSUKA_1/aune/1.0.0'
@@ -2560,24 +2563,355 @@ paths:
                     items:
                       $ref: '#/components/schemas/Information'
 
-  # 良いね
-    # '/api/v1/users/{user_id}/like':
-    post:
+
+  # アウネの一覧を取得
+  '/api/v1/likes':
+    get:
       tags:
       - Like
-      summary: 'お知らせ情報取得'
+      summary: 'アウネの一覧を取得'
       responses:
         '200':
-          description: 'お知らせ情報取得'
+          description: 'アウネの一覧取得'
           content:
             application/json:
               schema:
                 type: object
                 properties:
-                  notifications:
+                  likes:
                     type: array
                     items:
-                      $ref: '#/components/schemas/Information'
+                      $ref: '#/components/schemas/Like'
+
+  # アウネを送る
+  '/api/v1/like/{user_id}':
+    post:
+      tags:
+      - Like
+      summary: 'アウネを送る'
+      parameters:
+        - name: user_id
+          in: path
+          description: 'ユーザーID'
+          schema:
+            type: integer
+          required: true
+      responses:
+        '201':
+          description: 'アウネ保存成功'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  like:
+                    $ref: '#/components/schemas/Like'
+
+  # アウネを削除する
+  '/api/v1/like/{like_id}':
+    delete:
+      tags:
+      - Like
+      summary: 'アウネを削除する'
+      parameters:
+        - name: like_id
+          in: path
+          description: 'いいねID'
+          schema:
+            type: integer
+          required: true
+      responses:
+        '201':
+          description: 'アウネ削除成功'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    nullable: false
+                    example: 'Like Deleted.'
+
+  # アウネを許可する
+  '/api/v1/like/{like_id}/accept':
+    post:
+      tags:
+      - Like
+      summary: 'アウネを許可する'
+      parameters:
+        - name: like_id
+          in: path
+          description: 'いいねID'
+          schema:
+            type: integer
+          required: true
+      responses:
+        '201':
+          description: 'アウネの許可成功'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  like:
+                    $ref: '#/components/schemas/Like'
+
+  # アウネを拒否する
+  '/api/v1/like/{like_id}/reject':
+    post:
+      tags:
+      - Like
+      summary: 'アウネを拒否する'
+      parameters:
+        - name: like_id
+          in: path
+          description: 'いいねID'
+          schema:
+            type: integer
+          required: true
+      responses:
+        '201':
+          description: 'アウネの拒否成功'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  like:
+                    $ref: '#/components/schemas/Like'
+
+  # アワナイネの一覧を取得
+  '/api/v1/dislikes':
+    get:
+      tags:
+      - Like
+      summary: 'アワナイネの一覧を取得'
+      responses:
+        '200':
+          description: 'アワナイネの一覧取得'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  dislikes:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Dislike'    
+  
+  # アワナイネを送る
+  '/api/v1/dislike/{user_id}':
+    post:
+      tags:
+      - Like
+      summary: 'アワナイネを送る'
+      parameters:
+        - name: user_id
+          in: path
+          description: 'ユーザーID'
+          schema:
+            type: integer
+          required: true
+      responses:
+        '201':
+          description: 'アワナイネ保存成功'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  dislike:
+                    $ref: '#/components/schemas/Dislike'
+
+  # アオウの一覧を取得
+  '/api/v1/post_likes':
+    get:
+      tags:
+      - Like
+      summary: 'アオウの一覧を取得'
+      responses:
+        '200':
+          description: 'アオウの一覧取得'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  dislikes:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Dislike'   
+  
+  # 拒否したアオウの一覧を取得
+  '/api/v1/post_likes/rejected':
+    get:
+      tags:
+      - Like
+      summary: '拒否したアオウの一覧を取得'
+      responses:
+        '200':
+          description: '拒否したアオウの一覧を取得'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  post_likes:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/PostLike'
+
+  #募集掲示板応募（アオウを送る）
+  '/api/v1/post_like/{post_id}':
+    post:
+      tags:
+      - Like
+      summary: '募集掲示板応募（アオウを送る）'
+      parameters:
+        - name: post_id
+          in: path
+          description: '募集ID'
+          schema:
+            type: integer
+          required: true
+      responses:
+        '200':
+          description: '募集掲示板応募（アオウを送る）'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  post:
+                    $ref: '#/components/schemas/Post'
+
+  #アオウを許可する
+  '/api/v1/post/like/{post_like_id}/accept':
+    post:
+      tags:
+      - Like
+      summary: 'アオウを許可する'
+      parameters:
+        - name: post_like_id
+          in: path
+          description: 'アオウのID'
+          schema:
+            type: integer
+          required: true
+      responses:
+        '200':
+          description: 'アオウを許可する'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  post_like:
+                      $ref: '#/components/schemas/PostLike'
+  
+  #アオウを拒否する
+  '/api/v1/post/like/{post_like_id}/reject':
+    post:
+      tags:
+      - Like
+      summary: 'アオウを拒否する'
+      parameters:
+      - name: post_like_id
+        in: path
+        description: 'アオウをID'
+        schema:
+          type: integer
+        required: true
+      responses:
+       '200':
+        description: 'アオウを拒否する'
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                post_like:
+                  $ref: '#/components/schemas/PostLike'
+
+
+  # 募集掲示板一覧取得
+  '/api/v1/posts':
+    get:
+      tags:
+      - Like
+      summary: '募集掲示板一覧取得'
+      responses:
+        '200':
+          description: '募集掲示板一覧取得'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  posts:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Post'
+    post:
+      tags:
+      - Like
+      summary: '掲示板作成'
+      responses:
+        '200':
+          description: '募集掲示板の作成'
+          content:
+            applicaition/json:
+              schema:
+                type: object
+                properties:
+                  post:
+                    $ref: '#/components/schemas/Post'
+
+  # 募集掲示板詳細取得
+  '/api/v1/posts/{post_id}/contents':
+    get:
+      tags:
+      - Like
+      summary: '募集掲示板詳細取得'
+      parameters:
+        - name: post_id
+          in: path
+          description: '募集ID'
+          schema:
+            type: integer
+          required: true
+      responses:
+        '200':
+          description: '募集掲示板詳細取得'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  posts:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Post'  
+  
+  #アオウした募集一覧を見る
+  '/api/v1/posts/sent_post_like':
+    get:
+      tags:
+      - Like
+      summary: 'アオウした募集一覧を見る'
+      responses:
+        '200':
+          description: 'アオウした募集一覧を取得'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  posts:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Post'  
+  
   # 良いね
   # '/api/v1/users/{user_id}/like':
   #   post:
@@ -2610,6 +2944,7 @@ paths:
   #     summary: 'いいねを拒否する'
 
   # マッチング一覧
+  
   '/api/v1/matches':
     get:
       tags:
