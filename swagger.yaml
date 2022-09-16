@@ -2591,6 +2591,45 @@ paths:
                     type: array
                     items:
                       $ref: '#/components/schemas/Like'
+        '401':
+          description: '未ログイン'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    nullable: false
+                    example: 'unauthenticated.'
+        '403':
+          description: 'Not Found'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    nullable: false
+                    example: 'Forbidden'
+        '404':
+          description: 'Not Found'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    nullable: false
+                    example: 'User Not Found.'
+        '422':
+          description: 'POSTパラメータ異常によるバリデーションエラー'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errors:
+                    $ref: '#/components/schemas/422Error'
 
   # アウネを送る
   '/api/v1/like/{user_id}':
@@ -2615,6 +2654,45 @@ paths:
                 properties:
                   like:
                     $ref: '#/components/schemas/Like'
+        '401':
+          description: '未ログイン'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    nullable: false
+                    example: 'unauthenticated.'
+        '403':
+          description: 'Not Found'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    nullable: false
+                    example: 'Forbidden'
+        '404':
+          description: 'Not Found'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    nullable: false
+                    example: 'User Not Found.'
+        '422':
+          description: 'POSTパラメータ異常によるバリデーションエラー'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errors:
+                    $ref: '#/components/schemas/422Error'
 
   # アウネを削除する
   '/api/v1/like/{like_id}':
@@ -2640,6 +2718,45 @@ paths:
                   message:
                     nullable: false
                     example: 'Like Deleted.'
+        '401':
+          description: '未ログイン'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    nullable: false
+                    example: 'unauthenticated.'
+        '403':
+          description: 'Not Found'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    nullable: false
+                    example: 'Forbidden'
+        '404':
+          description: 'Not Found'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    nullable: false
+                    example: 'User Not Found.'
+        '422':
+          description: 'POSTパラメータ異常によるバリデーションエラー'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errors:
+                    $ref: '#/components/schemas/422Error'
 
   # アウネを許可する
   '/api/v1/like/{like_id}/accept':
@@ -2688,6 +2805,45 @@ paths:
                 properties:
                   like:
                     $ref: '#/components/schemas/Like'
+        '401':
+          description: '未ログイン'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    nullable: false
+                    example: 'unauthenticated.'
+        '403':
+          description: 'Not Found'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    nullable: false
+                    example: 'Forbidden'
+        '404':
+          description: 'Not Found'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    nullable: false
+                    example: 'User Not Found.'
+        '422':
+          description: 'POSTパラメータ異常によるバリデーションエラー'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errors:
+                    $ref: '#/components/schemas/422Error'
 
   # アワナイネの一覧を取得
   '/api/v1/dislikes':
@@ -2707,6 +2863,45 @@ paths:
                     type: array
                     items:
                       $ref: '#/components/schemas/Dislike'    
+        '401':
+          description: '未ログイン'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    nullable: false
+                    example: 'unauthenticated.'
+        '403':
+          description: 'Not Found'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    nullable: false
+                    example: 'Forbidden'
+        '404':
+          description: 'Not Found'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    nullable: false
+                    example: 'User Not Found.'
+        '422':
+          description: 'POSTパラメータ異常によるバリデーションエラー'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errors:
+                    $ref: '#/components/schemas/422Error'
   
   # アワナイネを送る
   '/api/v1/dislike/{user_id}':
@@ -2731,6 +2926,45 @@ paths:
                 properties:
                   dislike:
                     $ref: '#/components/schemas/Dislike'
+        '401':
+          description: '未ログイン'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    nullable: false
+                    example: 'unauthenticated.'
+        '403':
+          description: 'Not Found'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    nullable: false
+                    example: 'Forbidden'
+        '404':
+          description: 'Not Found'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    nullable: false
+                    example: 'User Not Found.'
+        '422':
+          description: 'POSTパラメータ異常によるバリデーションエラー'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errors:
+                    $ref: '#/components/schemas/422Error'
 
   # アオウの一覧を取得
   '/api/v1/post_likes':
@@ -2750,6 +2984,45 @@ paths:
                     type: array
                     items:
                       $ref: '#/components/schemas/Dislike'   
+        '401':
+          description: '未ログイン'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    nullable: false
+                    example: 'unauthenticated.'
+        '403':
+          description: 'Not Found'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    nullable: false
+                    example: 'Forbidden'
+        '404':
+          description: 'Not Found'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    nullable: false
+                    example: 'User Not Found.'
+        '422':
+          description: 'POSTパラメータ異常によるバリデーションエラー'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errors:
+                    $ref: '#/components/schemas/422Error'  
   
   # 拒否したアオウの一覧を取得
   '/api/v1/post_likes/rejected':
@@ -2769,6 +3042,45 @@ paths:
                     type: array
                     items:
                       $ref: '#/components/schemas/PostLike'
+        '401':
+          description: '未ログイン'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    nullable: false
+                    example: 'unauthenticated.'
+        '403':
+          description: 'Not Found'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    nullable: false
+                    example: 'Forbidden'
+        '404':
+          description: 'Not Found'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    nullable: false
+                    example: 'User Not Found.'
+        '422':
+          description: 'POSTパラメータ異常によるバリデーションエラー'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errors:
+                    $ref: '#/components/schemas/422Error'
 
   #募集掲示板応募（アオウを送る）
   '/api/v1/post_like/{post_id}':
@@ -2793,6 +3105,45 @@ paths:
                 properties:
                   post:
                     $ref: '#/components/schemas/Post'
+        '401':
+          description: '未ログイン'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    nullable: false
+                    example: 'unauthenticated.'
+        '403':
+          description: 'Not Found'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    nullable: false
+                    example: 'Forbidden'
+        '404':
+          description: 'Not Found'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    nullable: false
+                    example: 'User Not Found.'
+        '422':
+          description: 'POSTパラメータ異常によるバリデーションエラー'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errors:
+                    $ref: '#/components/schemas/422Error'
 
   #アオウを許可する
   '/api/v1/post/like/{post_like_id}/accept':
@@ -2817,6 +3168,45 @@ paths:
                 properties:
                   post_like:
                       $ref: '#/components/schemas/PostLike'
+        '401':
+          description: '未ログイン'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    nullable: false
+                    example: 'unauthenticated.'
+        '403':
+          description: 'Not Found'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    nullable: false
+                    example: 'Forbidden'
+        '404':
+          description: 'Not Found'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    nullable: false
+                    example: 'User Not Found.'
+        '422':
+          description: 'POSTパラメータ異常によるバリデーションエラー'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errors:
+                    $ref: '#/components/schemas/422Error'
   
   #アオウを拒否する
   '/api/v1/post/like/{post_like_id}/reject':
@@ -3450,6 +3840,45 @@ paths:
                     type: array
                     items:
                       $ref: '#/components/schemas/PostComments'
+        '401':
+          description: '未ログイン'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    nullable: false
+                    example: 'unauthenticated.'
+        '403':
+          description: 'Not Found'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    nullable: false
+                    example: 'Forbidden'
+        '404':
+          description: 'Not Found'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    nullable: false
+                    example: 'User Not Found.'
+        '422':
+          description: 'POSTパラメータ異常によるバリデーションエラー'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errors:
+                    $ref: '#/components/schemas/422Error'
 
   # 募集掲示板詳細取得
   '/api/v1/posts/{post_id}/contents':
@@ -3476,6 +3905,45 @@ paths:
                     type: array
                     items:
                       $ref: '#/components/schemas/Post'  
+        '401':
+          description: '未ログイン'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    nullable: false
+                    example: 'unauthenticated.'
+        '403':
+          description: 'Not Found'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    nullable: false
+                    example: 'Forbidden'
+        '404':
+          description: 'Not Found'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    nullable: false
+                    example: 'User Not Found.'
+        '422':
+          description: 'POSTパラメータ異常によるバリデーションエラー'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errors:
+                    $ref: '#/components/schemas/422Error'
   
   #アオウした募集一覧を見る
   '/api/v1/posts/sent_post_like':
@@ -3495,7 +3963,45 @@ paths:
                     type: array
                     items:
                       $ref: '#/components/schemas/Post'  
-  
+        '401':
+          description: '未ログイン'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    nullable: false
+                    example: 'unauthenticated.'
+        '403':
+          description: 'Not Found'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    nullable: false
+                    example: 'Forbidden'
+        '404':
+          description: 'Not Found'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    nullable: false
+                    example: 'User Not Found.'
+        '422':
+          description: 'POSTパラメータ異常によるバリデーションエラー'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errors:
+                    $ref: '#/components/schemas/422Error'
 
 # components
 components:
